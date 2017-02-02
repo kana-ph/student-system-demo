@@ -10,9 +10,17 @@ import ph.kana.testdemo.repository.StudentRecordRepository;
 
 class StudentRecordService {
 	
-	private final SubjectService subjectService = new SubjectService();
-	private final StudentRecordRepository studentRecordRepository = new StudentRecordRepository();
-	
+	private SubjectService subjectService;
+	private StudentRecordRepository studentRecordRepository;
+
+	public void setSubjectService(SubjectService subjectService) {
+		this.subjectService = subjectService;
+	}
+
+	public void setStudentRecordRepository(StudentRecordRepository studentRecordRepository) {
+		this.studentRecordRepository = studentRecordRepository;
+	}
+
 	public void enroll(Student student, List<Subject> subjects) throws ServiceException {
 		try {
 			for (Subject subject : subjects) {
@@ -31,7 +39,7 @@ class StudentRecordService {
 			throw new ServiceException("Error in enrollment", e);
 		}
 	}
-	
+
 	private StudentRecord enrollToSubject(Student student, Subject subject) throws DataAccessException {
 		StudentRecord enrollRecord = new StudentRecord();
 		enrollRecord.setStudent(student);

@@ -4,6 +4,7 @@ public class StudentRecord {
 	
 	private Student student;
 	private Subject subject;
+	private boolean passed;
 
 	public Student getStudent() {
 		return student;
@@ -20,9 +21,13 @@ public class StudentRecord {
 	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
-	
+
 	public boolean isPassed() {
-		return true;
+		return passed;
 	}
-	
+
+	public void setPassed(boolean passed) {
+		this.passed = passed;
+	}
+
 }
