@@ -3,13 +3,14 @@ package ph.kana.testdemo.service;
 import java.util.List;
 import ph.kana.testdemo.exception.DataAccessException;
 import ph.kana.testdemo.exception.ServiceException;
+import ph.kana.testdemo.exception.SubjectRequirementException;
 import ph.kana.testdemo.model.Student;
 import ph.kana.testdemo.model.StudentRecord;
 import ph.kana.testdemo.model.Subject;
 import ph.kana.testdemo.repository.StudentRecordRepository;
 
 class StudentRecordService {
-	
+
 	private SubjectService subjectService;
 	private StudentRecordRepository studentRecordRepository;
 
@@ -25,18 +26,22 @@ class StudentRecordService {
 		try {
 			for (Subject subject : subjects) {
 				List<Subject> preRequisites = subjectService.fetchPrerequisites(subject);
+				checkPassedAllPreRequisites(student, preRequisites);
 
-				for (Subject preRequisite : preRequisites) {
-					StudentRecord record = studentRecordRepository
-						.findByStudentAndSubject(student, preRequisite);
-
-					if (record != null && record.isPassed()) {
-						enrollToSubject(student, subject);
-					}
-				}
+				enrollToSubject(student, subject);
 			}
-		} catch (DataAccessException e) {
+		} catch (DataAccessException | SubjectRequirementException e) {
 			throw new ServiceException("Error in enrollment", e);
+		}
+	}
+
+	private void checkPassedAllPreRequisites(Student student, List<Subject> preRequisites) throws DataAccessException {
+		for (Subject preRequisite : preRequisites) {
+			StudentRecord record = studentRecordRepository
+				.findByStudentAndSubject(student, preRequisite);
+			if (record == null || !record.isPassed()) {
+				throw new SubjectRequirementException("Pre-requiste not passed yet.");
+			}
 		}
 	}
 
@@ -45,7 +50,7 @@ class StudentRecordService {
 		enrollRecord.setStudent(student);
 		enrollRecord.setSubject(subject);
 		studentRecordRepository.save(enrollRecord);
-		
+
 		return enrollRecord;
 	}
 }
