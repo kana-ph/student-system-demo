@@ -44,8 +44,9 @@ public class StudentRecordServiceTest {
 		given(subjectService.fetchPrerequisites(subject))
 			.willReturn(Arrays.asList(requiredSubject));
 
-		StudentRecord passedPrerequisiteRecord = new StudentRecord();
-		passedPrerequisiteRecord.setPassed(true);
+		StudentRecord passedPrerequisiteRecord = mock(StudentRecord.class);
+		given(passedPrerequisiteRecord.isPassed())
+			.willReturn(true);
 
 		given(studentRecordRepository.findByStudentAndSubject(student, requiredSubject))
 			.willReturn(passedPrerequisiteRecord);
