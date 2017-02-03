@@ -7,6 +7,7 @@ public class StudentRecordTest {
 
 	@Test
 	public void isPassedShouldReturnTrueIfMidtermsAndFinalsPassed() {
+		// isPassed should return true if midterms finals passed
 		// given
 		StudentRecord record = new StudentRecord();
 		record.setMidtermGrade(90.0);
@@ -21,6 +22,7 @@ public class StudentRecordTest {
 
 	@Test
 	public void getWeightedAverageShouldComputeGradesAgainstWeights() {
+		// getWeightedAverage should compute grades against weights
 		// given
 		StudentRecord record = new StudentRecord();
 		record.setMidtermGrade(50.00);

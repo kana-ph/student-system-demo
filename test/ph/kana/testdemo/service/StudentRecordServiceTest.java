@@ -36,6 +36,7 @@ public class StudentRecordServiceTest {
 
 	@Test
 	public void enrollShouldSaveStudentRecordIfPrerequisitedPassed() throws Exception {
+		// enroll should save student record if pre-requistes passed
 		// given
 		Student student = new Student();
 		Subject subject = new Subject();
